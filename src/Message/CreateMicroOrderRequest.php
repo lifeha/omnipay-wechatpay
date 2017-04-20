@@ -25,14 +25,7 @@ class CreateMicroOrderRequest extends CreateOrderRequest
      */
     public function getData()
     {
-        $this->validate(
-            'app_id',
-            'mch_id',
-            'body',
-            'out_trade_no',
-            'total_fee',
-            'auth_code'
-        );
+        $this->validate('app_id', 'mch_id', 'body', 'out_trade_no', 'total_fee', 'auth_code');
 
         $data = array (
             'appid'            => $this->getAppId(),//*
@@ -44,7 +37,7 @@ class CreateMicroOrderRequest extends CreateOrderRequest
             'out_trade_no'     => $this->getOutTradeNo(),//*
             'fee_type'         => $this->getFeeType(),
             'total_fee'        => $this->getTotalFee(),//*
-            'spbill_create_ip' => $this->getClientIp() ?: $this->getServerIp(),//*
+            'spbill_create_ip' => $this->getSpbillCreateIp(),//*
             'goods_tag'        => $this->getGoodsTag(),
             'limit_pay'        => $this->getLimitPay(),
             'auth_code'        => $this->getAuthCode(),//*
@@ -57,7 +50,6 @@ class CreateMicroOrderRequest extends CreateOrderRequest
 
         return $data;
     }
-
 
 
     /**
@@ -84,7 +76,9 @@ class CreateMicroOrderRequest extends CreateOrderRequest
      */
     public function sendData($data)
     {
-        $responseData = Helper::post($this->endpoint, $data);
+        $request      = $this->httpClient->post($this->endpoint)->setBody(Helper::array2xml($data));
+        $response     = $request->send()->getBody();
+        $responseData = Helper::xml2array($response);
 
         return $this->response = new CreateOrderResponse($this, $responseData);
     }

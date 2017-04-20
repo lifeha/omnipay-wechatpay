@@ -2,53 +2,22 @@
 
 namespace Omnipay\WechatPay;
 
-use SimpleXMLElement;
-
 class Helper
 {
 
-    public static function post($url, $data = array(), $timeout = 30, $options = array())
+    public static function array2xml($arr, $root = 'xml')
     {
-        $ch = curl_init($url);
-
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, self::array2xml($data));
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-        curl_setopt_array($ch, $options);
-
-        $result = curl_exec($ch);
-
-        $result = self::xml2array($result);
-
-        return $result;
-    }
-
-
-    public static function array2xml($data, $root = 'xml')
-    {
-        $data = array_filter($data);
-        $data = self::changeValueToString($data);
-        $data = array_flip($data);
-        $xml  = new SimpleXMLElement("<{$root}/>");
-        array_walk_recursive($data, array( $xml, 'addChild' ));
-
-        return $xml->asXML();
-    }
-
-
-    private static function changeValueToString($data)
-    {
-        $data1 = array();
-
-        foreach ($data as $k => $v) {
-            if (is_string($v) || is_numeric($v)) {
-                $data1[$k] = $v . '';
+        $xml = "<$root>";
+        foreach ($arr as $key => $val) {
+            if (is_numeric($val)) {
+                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+            } else {
+                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
             }
         }
+        $xml .= "</xml>";
 
-        return $data1;
+        return $xml;
     }
 
 
@@ -60,7 +29,7 @@ class Helper
 
     public static function sign($data, $key)
     {
-        unset( $data['sign'] );
+        unset($data['sign']);
 
         ksort($data);
 

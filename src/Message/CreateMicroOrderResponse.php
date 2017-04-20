@@ -21,14 +21,14 @@ class CreateMicroOrderResponse extends BaseAbstractResponse
     public function getOrderData()
     {
         if ($this->isSuccessful()) {
-            $data = array (
+            $data = [
                 'app_id'    => $this->request->getAppId(),
                 'mch_id'    => $this->request->getMchId(),
                 'prepay_id' => $this->getPrepayId(),
                 'package'   => 'Sign=WXPay',
                 'nonce'     => md5(uniqid()),
-                'timestamp' => time(),
-            );
+                'timestamp' => time() . '',
+            ];
 
             $data['sign'] = Helper::sign($data, $this->request->getApiKey());
         } else {
@@ -39,20 +39,20 @@ class CreateMicroOrderResponse extends BaseAbstractResponse
     }
 
 
-    public function getCodeUrl()
+    public function getPrepayId()
     {
-        if ($this->isSuccessful() && $this->request->getTradeType() == 'NATIVE') {
-            return $this->getData()['code_url'];
+        if ($this->isSuccessful()) {
+            return $this->getData()['prepay_id'];
         } else {
             return null;
         }
     }
 
 
-    public function getPrepayId()
+    public function getCodeUrl()
     {
-        if ($this->isSuccessful()) {
-            return $this->getData()['prepay_id'];
+        if ($this->isSuccessful() && $this->request->getTradeType() == 'NATIVE') {
+            return $this->getData()['code_url'];
         } else {
             return null;
         }
