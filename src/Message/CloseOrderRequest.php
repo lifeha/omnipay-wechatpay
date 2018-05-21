@@ -8,13 +8,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class CloseOrderRequest
+ *
  * @package Omnipay\WechatPay\Message
- * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_3&index=5
- * @method CloseOrderResponse send()
+ * @link    https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_3&index=5
+ * @method  CloseOrderResponse send()
  */
 class CloseOrderRequest extends BaseAbstractRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/pay/closeorder';
 
 
@@ -26,12 +26,13 @@ class CloseOrderRequest extends BaseAbstractRequest
      */
     public function getData()
     {
-
         $this->validate('app_id', 'mch_id', 'out_trade_no');
 
-        $data = array (
+        $data = array(
             'appid'        => $this->getAppId(),
             'mch_id'       => $this->getMchId(),
+            'sub_appid'    => $this->getSubAppId(),
+            'sub_mch_id'   => $this->getSubMchId(),
             'out_trade_no' => $this->getOutTradeNo(),
             'nonce_str'    => md5(uniqid()),
         );

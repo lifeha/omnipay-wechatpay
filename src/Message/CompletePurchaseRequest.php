@@ -6,15 +6,14 @@ use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\WechatPay\Helper;
 
 /**
- *
  * Class CompletePurchaseRequest
+ *
  * @package Omnipay\WechatPay\Message
- * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_7&index=3
- * @method CompletePurchaseResponse send()
+ * @link    https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_7&index=3
+ * @method  CompletePurchaseResponse send()
  */
 class CompletePurchaseRequest extends BaseAbstractRequest
 {
-
     public function setRequestParams($requestParams)
     {
         $this->setParameter('request_params', $requestParams);
@@ -33,7 +32,7 @@ class CompletePurchaseRequest extends BaseAbstractRequest
         $data = $this->getData();
         $sign = Helper::sign($data, $this->getApiKey());
 
-        $responseData = array ();
+        $responseData = array();
 
         if (isset($data['sign']) && $data['sign'] && $sign === $data['sign']) {
             $responseData['sign_match'] = true;

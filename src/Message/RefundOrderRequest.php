@@ -9,13 +9,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class RefundOrderRequest
+ *
  * @package Omnipay\WechatPay\Message
  * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_4&index=6
- * @method RefundOrderResponse send()
+ * @method  RefundOrderResponse send()
  */
 class RefundOrderRequest extends BaseAbstractRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
 
 
@@ -29,9 +29,11 @@ class RefundOrderRequest extends BaseAbstractRequest
     {
         $this->validate('app_id', 'mch_id', 'out_trade_no', 'cert_path', 'key_path');
 
-        $data = array (
+        $data = array(
             'appid'           => $this->getAppId(),
             'mch_id'          => $this->getMchId(),
+            'sub_appid'       => $this->getSubAppId(),
+            'sub_mch_id'      => $this->getSubMchId(),
             'device_info'     => $this->getDeviceInfo(),//<>
             'transaction_id'  => $this->getTransactionId(),
             'out_trade_no'    => $this->getOutTradeNo(),
@@ -237,7 +239,7 @@ class RefundOrderRequest extends BaseAbstractRequest
      */
     public function sendData($data)
     {
-        $options = array (
+        $options = array(
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_SSLCERTTYPE    => 'PEM',
@@ -252,6 +254,6 @@ class RefundOrderRequest extends BaseAbstractRequest
         $response     = $request->send()->getBody();
         $responseData = Helper::xml2array($response);
 
-        return $this->response = new CloseOrderResponse($this, $responseData);
+        return $this->response = new RefundOrderResponse($this, $responseData);
     }
 }

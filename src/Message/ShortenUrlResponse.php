@@ -4,12 +4,12 @@ namespace Omnipay\WechatPay\Message;
 
 /**
  * Class ShortenUrlResponse
+ *
  * @package Omnipay\WechatPay\Message
- * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_3&index=5
+ * @link    https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_9&index=8
  */
 class ShortenUrlResponse extends BaseAbstractResponse
 {
-
     public function getShortUrl()
     {
         $data = $this->getData();

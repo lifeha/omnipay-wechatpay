@@ -7,13 +7,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class CreateMicroOrderRequest
+ *
  * @package Omnipay\WechatPay\Message
  * @link    https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10&index=1
- * @method CreateMicroOrderResponse send()
+ * @method  CreateMicroOrderResponse send()
  */
 class CreateMicroOrderRequest extends CreateOrderRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/pay/micropay';
 
 
@@ -27,9 +27,10 @@ class CreateMicroOrderRequest extends CreateOrderRequest
     {
         $this->validate('app_id', 'mch_id', 'body', 'out_trade_no', 'total_fee', 'auth_code');
 
-        $data = array (
+        $data = array(
             'appid'            => $this->getAppId(),//*
             'mch_id'           => $this->getMchId(),
+            'sub_mch_id'       => $this->getSubMchId(),
             'device_info'      => $this->getDeviceInfo(),//*
             'body'             => $this->getBody(),//*
             'detail'           => $this->getDetail(),

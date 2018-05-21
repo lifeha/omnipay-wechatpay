@@ -8,13 +8,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class QueryOpenIdByAuthCodeRequest
+ *
  * @package Omnipay\WechatPay\Message
  * @link    https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9
- * @method QueryOpenIdByAuthCodeResponse send()
+ * @method  QueryOpenIdByAuthCodeResponse send()
  */
 class QueryOpenIdByAuthCodeRequest extends BaseAbstractRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/tools/authcodetoopenid';
 
 
@@ -26,12 +26,12 @@ class QueryOpenIdByAuthCodeRequest extends BaseAbstractRequest
      */
     public function getData()
     {
-
         $this->validate('app_id', 'mch_id', 'auth_code');
 
-        $data = array (
+        $data = array(
             'appid'     => $this->getAppId(),
             'mch_id'    => $this->getMchId(),
+            'sub_mch_id'  => $this->getSubMchId(),
             'auth_code' => $this->getAuthCode(),
             'nonce_str' => md5(uniqid()),
         );

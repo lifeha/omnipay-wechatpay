@@ -8,13 +8,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class ShortenUrlRequest
+ *
  * @package Omnipay\WechatPay\Message
  * @link    https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_9&index=8
- * @method ShortenUrlResponse send()
+ * @method  ShortenUrlResponse send()
  */
 class ShortenUrlRequest extends BaseAbstractRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/tools/shorturl';
 
 
@@ -26,12 +26,12 @@ class ShortenUrlRequest extends BaseAbstractRequest
      */
     public function getData()
     {
-
         $this->validate('app_id', 'mch_id', 'long_url');
 
-        $data = array (
+        $data = array(
             'appid'     => $this->getAppId(),
             'mch_id'    => $this->getMchId(),
+            'sub_mch_id'=> $this->getSubMchId(),
             'long_url'  => $this->getLongUrl(),
             'nonce_str' => md5(uniqid()),
         );

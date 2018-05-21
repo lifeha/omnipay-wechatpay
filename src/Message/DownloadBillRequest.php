@@ -8,13 +8,13 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class DownloadBillRequest
+ *
  * @package Omnipay\WechatPay\Message
- * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_6&index=8
- * @method DownloadBillResponse send()
+ * @link    https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_8
+ * @method  DownloadBillResponse send()
  */
 class DownloadBillRequest extends BaseAbstractRequest
 {
-
     protected $endpoint = 'https://api.mch.weixin.qq.com/pay/downloadbill';
 
 
@@ -28,9 +28,11 @@ class DownloadBillRequest extends BaseAbstractRequest
     {
         $this->validate('app_id', 'mch_id', 'bill_date');
 
-        $data = array (
+        $data = array(
             'appid'       => $this->getAppId(),
             'mch_id'      => $this->getMchId(),
+            'sub_appid'   => $this->getSubAppId(),
+            'sub_mch_id'  => $this->getSubMchId(),
             'device_info' => $this->getDeviceInfo(),
             'bill_date'   => $this->getBillDate(),
             'bill_type'   => $this->getBillType(),//<>
@@ -114,7 +116,7 @@ class DownloadBillRequest extends BaseAbstractRequest
     }
 
 
-    private function post($url, $data = array (), $timeout = 3)
+    private function post($url, $data = array(), $timeout = 3)
     {
         $ch = curl_init($url);
 
@@ -128,7 +130,7 @@ class DownloadBillRequest extends BaseAbstractRequest
         if (preg_match('#return_code#', $result)) {
             $result = Helper::xml2array($result);
         } else {
-            $result = array (['return_code' => 'SUCCESS', 'raw' => $result]);
+            $result = array(['return_code' => 'SUCCESS', 'raw' => $result]);
         }
 
         return $result;

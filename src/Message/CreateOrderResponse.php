@@ -6,6 +6,7 @@ use Omnipay\WechatPay\Helper;
 
 /**
  * Class CreateOrderResponse
+ *
  * @package Omnipay\WechatPay\Message
  * @link    https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_1
  */
@@ -77,6 +78,18 @@ class CreateOrderResponse extends BaseAbstractResponse
             $data = $this->getData();
 
             return $data['code_url'];
+        } else {
+            return null;
+        }
+    }
+
+
+    public function getMwebUrl()
+    {
+        if ($this->isSuccessful() && $this->request->getTradeType() == 'MWEB') {
+            $data = $this->getData();
+
+            return $data['mweb_url'];
         } else {
             return null;
         }
